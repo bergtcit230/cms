@@ -1,3 +1,6 @@
 button{
     margin: 2.5px;
 }
+img{
+    max-height: 50px;
+}

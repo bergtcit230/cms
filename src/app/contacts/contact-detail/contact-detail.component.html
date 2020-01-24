@@ -4,10 +4,10 @@
 
 
       <div class="panel-heading clearfix">
-            <h4 class="pull-left">{{contact.name}}</h4>
+            <h2 class="pull-left">{{contact.name}}</h2>
         <div class="row">
           <div class="col-xs-12">
-              <img [src]="contact.imagePath" alt="{{contact.name}}" class="img-responsive pull-left" style="max-height: 50px;">
+              <img [src]="contact.imagePath" alt="{{contact.name}}" class="img-responsive pull-left" *ngIf="contact.imagePath">
               <span class="pull-right">
             <button class="btn btn-primary" type="button">Edit</button>
             <button class="btn btn-danger" type="button">Delete</button>
@@ -20,10 +20,10 @@
       <div class="panel-body">
         <div class="pull-left">
           <p class="list-group-item-title">
-            <span class="font-weight-bold">Email: </span>{{contact.email}}
+            <strong>Email: </strong>{{contact.email}}
           </p>
           <p class="list-group-item-text">
-                <span class="font-weight-bold">Phone: </span>{{contact.phone}}
+                <strong>Phone: </strong>{{contact.phone}}
           </p>
         </div>
       </div>
