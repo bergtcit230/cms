@@ -7,3 +7,6 @@
   float: left;
   padding: .25rem
 }
+a {
+  cursor:pointer;
+}

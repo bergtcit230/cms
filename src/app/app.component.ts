@@ -8,9 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'CMS';
   
-  loadedFeature = "messages";
-
-  onNavigate(feature: string){
-    this.loadedFeature =feature;
-  }
+  
 }

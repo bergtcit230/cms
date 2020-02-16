@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Contact } from '../contact.model';
+import {ContactService} from '../contact.service';
 
 
 @Component({
@@ -9,14 +10,11 @@ import { Contact } from '../contact.model';
 })
 export class ContactItemComponent implements OnInit {
 @Input() contact: Contact;
-@Output() contactSelected = new EventEmitter<void>();
+@Input() index: number;
 
-  constructor() { }
+  constructor(private contactService: ContactService) { }
 
   ngOnInit() {
   }
 
-  onSelected(){
-    this.contactSelected.emit();
-  }
 }
