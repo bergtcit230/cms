@@ -66,7 +66,6 @@ export class ContactService {
    }
 
 
-  // }
   addContact(newContact: Contact){
     if (newContact === null || !newContact){
       return;

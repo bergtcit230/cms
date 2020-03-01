@@ -1,7 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {Subscription } from 'rxjs';
 import{Document} from '../documents.model';
- import {DocumentService} from "../document.service";
+import {DocumentService} from "../document.service";
+//import {DragDropModule} from '@angular/core';
 
 @Component({
   selector: 'cms-document-list',
