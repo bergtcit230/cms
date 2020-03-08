@@ -1,5 +1,5 @@
 import {Subscription } from 'rxjs';
-
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
 import { Contact } from './contact.model';
 import { MOCKCONTACTS } from './MOCKCONTACTS';
@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ContactService {
+
   contactSelectedEvent = new EventEmitter<Contact>();
   contactChangedEvent = new EventEmitter<Contact[]>();
   
@@ -16,8 +17,10 @@ export class ContactService {
 
   contacts: Contact[] = [];
   maxContactId: number;
-  constructor() {
+
+  constructor(private http:HttpClient, private contactService: ContactService) {
     this.contacts = MOCKCONTACTS;
+
     this.maxContactId=this.getMaxId();
   }
 
@@ -30,13 +33,48 @@ export class ContactService {
     return null;
   }
 
-  getContacts(): Contact[] {
+  getContacts(): Contact[]{
     return this.contacts.slice();
   }
 
-  getOneContact(id: number) {
-    return this.contacts[id];
+  fetchContacts(){
+    return this.http
+    .get<Contact[]>(
+      'https://cms-project-645db.firebaseio.com/contacts.json'
+    )
+    .subscribe(
+      // success function
+     (contacts: Contact[] ) => {
+     this.contacts = contacts;
+     this.maxContactId =this.getMaxId();
+     this.contacts.sort((a, b) => (a['name']) ? 1 : (a['name'] > b['name']) ? -1 : 0);
+
+     this.contactListChangedEvent.next(this.contacts.slice());
+      }
+     
+     ,(error: any) => {
+       console.log(error)
+     }
+     ) }
+
+  storeContacts(){
+    const contacts = JSON.stringify(this.contactService.getContacts());
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+      })
+    }; 
+    this.http.put('https://cms-project-645db.firebaseio.com/contacts.json', contacts).subscribe(response => {
+      this.contactListChangedEvent.next(this.contacts.slice());
+        
+    });
   }
+  
+  
+
+  // getOneContact(id: number) {
+  //   return this.contacts[id];
+  // }
 
   deleteContact(contact: Contact) {
     if (contact === null) {

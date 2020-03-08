@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import{HttpClientModule} from '@angular/common/http'
 
 
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { DocumentEditComponent } from './documents/document-edit/document-edit.c
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 
 import{DndModule} from 'ng2-dnd';
+import { ContactsFilterPipe } from './contacts/contacts-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import{DndModule} from 'ng2-dnd';
     DocumentItemComponent,
     DropdownDirective,
     DocumentEditComponent,
-    ContactEditComponent
+    ContactEditComponent,
+    ContactsFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -50,6 +53,7 @@ import{DndModule} from 'ng2-dnd';
     ReactiveFormsModule,
     AppRoutingModule,
     DndModule.forRoot(),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

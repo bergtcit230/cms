@@ -10,11 +10,11 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./contact-edit.component.css']
 })
 export class ContactEditComponent implements OnInit {
-id: number;
+id: string;
 editMode = false;
 hasGroup = false;
 contact: Contact;
-groupContacts: Contact[];
+groupContacts: Contact[]=[];
 originalContact: Contact;
 
   
@@ -22,7 +22,7 @@ constructor(private route: ActivatedRoute, private contactService: ContactServic
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) =>{
-      this.id = +params['id'];
+      this.id = params['id'];
       this.editMode = params['id'] != null;
       
       if(this.id===null){
@@ -30,7 +30,7 @@ constructor(private route: ActivatedRoute, private contactService: ContactServic
         return;
       }
 
-      this.originalContact = this.contactService.getOneContact(this.id);
+      this.originalContact = this.contactService.getContact(this.id);
       if(this.originalContact === null){
         return;
       }
@@ -73,7 +73,7 @@ constructor(private route: ActivatedRoute, private contactService: ContactServic
       return true;
     }
 
-    if (newContact.id=== this.contact.id){
+    if (this.contact && newContact.id=== this.contact.id){
       return true;
     }
     
@@ -87,12 +87,12 @@ constructor(private route: ActivatedRoute, private contactService: ContactServic
 
   addToGroup($event: any){
     let selectedContact: Contact = $event.dragData;
-    this.invalidGroupContact= this.isInvalidContact(selectedContact);
-    if(this.invalidGroupContact){
+  const invalidGroupContact= this.isInvalidContact(selectedContact);
+    if(invalidGroupContact){
       return;
     }
     this.groupContacts.push(selectedContact);
-    this.invalidGroupContact = false;
+    
   }
 
   onRemoveItem(idx:number){
@@ -100,6 +100,7 @@ constructor(private route: ActivatedRoute, private contactService: ContactServic
       return;
     }
     this.groupContacts.splice(idx, 1)
-    this.invalidGroupContact=false;
+    
   }
+  
 }

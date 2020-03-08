@@ -11,7 +11,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class ContactDetailComponent implements OnInit {
 contact: Contact;
-id: number;
+id: string;
 
   constructor(private contactService: ContactService, private route: ActivatedRoute, private router: Router,) { 
     
@@ -19,8 +19,8 @@ id: number;
 
   ngOnInit() {
     this.route.params.subscribe((params: Params)=>{
-      this.id = +params['id'];
-      this.contact=this.contactService.getOneContact(this.id);
+      this.id = params['id'];
+      this.contact=this.contactService.getContact(this.id);
     }
     );
   }

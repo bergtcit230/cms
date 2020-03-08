@@ -3,6 +3,7 @@ import {Contact} from '../contact.model';
 import {ContactService} from "../contact.service";
 import { Subscription } from 'rxjs';
 
+
 @Component({
   selector: 'cms-contact-list',
   templateUrl: './contact-list.component.html',
@@ -11,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class ContactListComponent implements OnInit, OnDestroy {
   contacts: Contact[]=[];
   subscription: Subscription;
- 
+  term: string= "";
   constructor(private contactService: ContactService) { }
   
   ngOnInit() {
@@ -29,6 +30,11 @@ export class ContactListComponent implements OnInit, OnDestroy {
 
 onSelected(contact: Contact){
   this.contactService.contactSelectedEvent.emit(contact);
+}
+
+onKeyPress(value:string){
+  this.term = value;
+  console.log(this.term)
 }
 
 }

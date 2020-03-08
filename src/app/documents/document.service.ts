@@ -3,7 +3,7 @@ import { Document } from './documents.model';
 import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import {Subject} from 'rxjs';
 import {Subscription} from 'rxjs';
-// import { DocumentsComponent } from './documents.component';
+import { HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,10 @@ documentListChangedEvent = new Subject<Document[]>();
 
 documents: Document []=[];
 maxDoucmentId: number;
-  constructor() { 
+
+  constructor(private http:HttpClient, private documentService: DocumentService) { 
     this.documents = MOCKDOCUMENTS;
+    
     this.maxDoucmentId=this.getMaxId();
   }
 
@@ -35,9 +37,9 @@ getDocuments(): Document[]{
   return this.documents.slice();
 }
 
-getOneDocument(id:number){
-  return this.documents[id];
-}
+// getOneDocument(id:number){
+//   return this.documents[id];
+// }
 
 deleteDocument(document: Document){
   if (document === null){
@@ -50,7 +52,7 @@ deleteDocument(document: Document){
   }
 
 this.documents.splice(pos, 1);
- this.documentListChangedEvent.next(this.documents.slice());
+this.storeDocuments();
 }
 
 getMaxId(): number{
@@ -73,7 +75,7 @@ addDocument(newDocument: Document){
   newDocument.id=this.maxDoucmentId.toString();
   this.documents.push(newDocument);
 
-  this.documentListChangedEvent.next(this.documents.slice());
+  this.storeDocuments();
 }
 
 updateDocument(originalDocument: Document, newDocument: Document){
@@ -88,7 +90,43 @@ updateDocument(originalDocument: Document, newDocument: Document){
 
   newDocument.id = originalDocument.id;
   this.documents[pos] = newDocument;
-  this.documentListChangedEvent.next(this.documents.slice());
+  this.storeDocuments();
 
 }
+
+storeDocuments(){
+  const documents = JSON.stringify(this.documentService.getDocuments());
+  const httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type':  'application/json',
+    })
+  }; 
+  this.http.put('https://cms-project-645db.firebaseio.com/documents.json', documents).subscribe(response => {
+    this.documentListChangedEvent.next(this.documents.slice());
+      
+  });
+}
+
+
+fetchDocuments() {
+  return this.http
+    .get<Document[]>(
+      'https://cms-project-645db.firebaseio.com/documents.json', 
+    )
+    .subscribe(
+      // success function
+     (documents: Document[] ) => {
+     this.documents = documents;
+     this.maxDoucmentId =this.getMaxId();
+     this.documents.sort((a, b) => (a['name']) ? 1 : (a['name'] > b['name']) ? -1 : 0);
+
+     this.documentListChangedEvent.next(this.documents.slice());
+      }
+     
+     ,(error: any) => {
+       console.log(error)
+     }
+     ) 
+}
+
 }
