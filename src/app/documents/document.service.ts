@@ -101,7 +101,7 @@ storeDocuments(){
       'Content-Type':  'application/json',
     })
   }; 
-  this.http.put('https://cms-project-645db.firebaseio.com/documents.json', documents).subscribe(response => {
+  this.http.put('https://cms-project-645db.firebaseio.com/localhost:3000/documents', documents).subscribe(response => {
     this.documentListChangedEvent.next(this.documents.slice());
       
   });

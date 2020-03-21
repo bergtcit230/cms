@@ -14,8 +14,7 @@
             (keyPress)="onKeyPress(searchBox.value)"
             #searchBox
             class="form-control"
-            placeholder="Enter search value"
-            [(ngModel)]="term">
+            placeholder="Enter search value">
             <!-- Add the search box input field here -->
     
             <div class="glyphicon glyphicon glyphicon-search input-group-addon" (click)="search(searchBox.value)"></div>
@@ -30,7 +29,7 @@
          <div class="row">
            <div class="col-xs-12">
 
-             <cms-contact-item *ngFor="let contact of contacts | contactsFilter:term" [contact]="contact" dnd-draggable [dragEnabled]="true"
+             <cms-contact-item *ngFor="let contact of contacts" [contact]="contact" dnd-draggable [dragEnabled]="true"
                [dragData]="contact" [dropZones]="['contactGroup']" ></cms-contact-item>
 
 
