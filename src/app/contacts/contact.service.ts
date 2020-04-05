@@ -18,7 +18,7 @@ export class ContactService {
   contacts: Contact[] = [];
   maxContactId: number;
 
-  constructor(private http:HttpClient, private contactService: ContactService) {
+  constructor(private http:HttpClient) {
     this.contacts = MOCKCONTACTS;
 
     this.maxContactId=this.getMaxId();
@@ -58,7 +58,7 @@ export class ContactService {
      ) }
 
   storeContacts(){
-    const contacts = JSON.stringify(this.contactService.getContacts());
+    const contacts = JSON.stringify(this.getContacts());
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
